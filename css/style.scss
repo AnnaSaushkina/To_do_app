@@ -1,0 +1,23 @@
+/* custom.css */
+.selector-for-some-widget {
+  box-sizing: content-box;
+}
+:root {
+  /* Переопределение основных цветов Bootstrap */
+  --bs-primary: #3498db;
+  --bs-primary-rgb: 52, 152, 219;
+}
+
+/* Кастомные стили для задач */
+.list-group-item {
+  transition: background-color 0.3s;
+}
+
+.list-group-item:hover {
+  background-color: rgba(var(--bs-primary-rgb), 0.1);
+}
+
+.task-completed {
+  text-decoration: line-through;
+  color: #6c757d;
+}
