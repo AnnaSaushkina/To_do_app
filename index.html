@@ -24,29 +24,35 @@
       <div class="col-md-6">
         <form id="task-form" class="d-flex">
           <input
+            text=""
             type="text"
-            id="task-input"
-            class="form-control me-2"
-            placeholder="Введите задачу..."
+            id="input"
+            class="form-control me-2 input"
+            placeholder="о чем дУмАеШь?"
           />
-          <button class="edit btn btn-success btn-sm" type="submit">
-            Добавить задачу
-          </button>
-          <button class="edit btn btn-warning btn-sm" type="button">
-            Редактировать задачу
-          </button>
-          <button class="delete btn btn-danger btn-sm" type="button">
-            Удалить задачу
-          </button>
+          <div class="d-flex gap-2">
+            <button class="add btn btn-success btn-sm" type="submit">
+              Наполнить реальность
+            </button>
+            <button class="edit btn btn-warning btn-sm" type="button">
+              Изменить реальность
+            </button>
+            <button class="delete btn btn-danger btn-sm" type="button">
+              Послать нахер
+            </button>
+          </div>
         </form>
       </div>
     </div>
 
+    <!-- <li class="task">
+      <input type="checkbox" name="" id="">
+      <p class="text"></p>
+    </li> -->
+
     <!-- Список задач -->
     <div class="row justify-content-center">
-      <div class="col-md-6">
-        <ul id="task-list" class="list-group"></ul>
-      </div>
+      <div class="col-md-5 task-list"></div>
     </div>
 
     <script src="js/EventEmitter.js"></script>

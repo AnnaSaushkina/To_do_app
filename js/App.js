@@ -1,5 +1,6 @@
 // import taskManager from "./store.js";
 
+// -------------------------- КОНСТРУКТОР МЕТОДОВ
 function Task(userText, id) {
     this.userText = userText;
     this.id = id;
@@ -10,14 +11,11 @@ function Task(userText, id) {
 
 let taskManager = {
     tasks: [],
-    inputHistory: [],
-    lastRender: '',
 
     addTask(id, userText) {
         let newTask = new Task(userText, id);
         this.tasks.push(newTask)
-        this.inputHistory.push(newTask)
-
+   
         this.tasks.forEach(task => {
             if (id == task.id) {
                 task.lastOperation = "add"
@@ -28,17 +26,14 @@ let taskManager = {
        let foundIndex = this.tasks.findIndex(task => task.id === id);
        if (foundIndex === -1) {
             console.log('Задача номер', id, 'не найдена')
-       } else {
-        this.tasks.splice(foundIndex, 1)
-        // this.inputHistory.splice(deletedTask, 1)
-       }
+       } else this.tasks.splice(foundIndex, 1)
     },
     toggleDone(id) {
         this.tasks.forEach(task => {
             if (id == task.id) {
                task.lastOperation = "toggle"
-               let toggled = task.done = !task.done    
-               this.inputHistory.push = toggled
+               task.done = !task.done    
+        
             } 
          })   
     },
@@ -47,30 +42,76 @@ let taskManager = {
             if (id == task.id) {
                 task.lastOperation = "edit"
                 let edited = task.userText = updateText
-                this.inputHistory.push = edited
+    
            } 
         })
     },
-
-    getRenderedOutput() {
-        let output = "\n---Текущий список задач: ---\n";
-        this.tasks.forEach(task => {
-          output += ` ${task.userText} ${task.done ? '✓' : '×'}\n`;
-        });
-        return output;
-      }
 }
 
+
+
+
+
+// 1. Базовый функционал (DOM + ООП)
+// слушатели кнопок
+let deleteBtn = document.querySelector(".delete")
+let addBtn = document.querySelector(".add")
+let editBtn = document.querySelector(".edit")
+
+
+// ----------------------ИНПУТ для текста
+let unput = document.querySelector('.input')
+const input = document.querySelector('.input')
+input.addEventListener('change', (e) => {
+    e.preventDefault();
+})
+
+
+// ----------------------создание содержания задачи с чекбоксами
+function createEl(task, ul) {
+    const li = document.createElement("li")
+    li.append(task.userText, " ", task.done)
+
+    // ----------создаем чекбокс
+    let checkboxInput = document.createElement('input')
+    checkboxInput.type = "checkbox"
+    checkboxInput.checked = task.done
+    li.prepend(checkboxInput)
+
+    
+    checkboxInput.addEventListener('change', () => {
+        task.done = checkboxInput.checked;
+    })
+
+    ul.appendChild(li)
+    return checkboxInput
+}
+
+
+
+// ----------------------отрисовка ЗАДАЧИ В ЛИСТ
 function render() {
-    const currentOutput = taskManager.getRenderedOutput();
-    if (currentOutput !== taskManager.lastRender) {
 
-        console.log(currentOutput);
-        taskManager.lastRender = currentOutput;
-      }
- }
+    // Создание листа
+    const tasksContainer = document.querySelector(".task-list")
+    tasksContainer.classList.add('list-group')
+    const ul = document.createElement("ul")
+    tasksContainer.replaceChildren(ul)
 
- function userInput(command, id, text) {
+    const checkboxesList = []
+
+    // Отрисовка каждый задачи с чекбоксом в лист
+    taskManager.tasks.forEach(task => {
+        const checkbox = createEl(task, ul)
+        checkboxesList.push(checkbox)
+    })
+
+    console.log(checkboxesList)
+}
+
+
+// ----------------ЯДРО ВЫЗОВА
+function userInput(command, id, text) {
     switch (command) {
         case 'add':
             taskManager.addTask(Number(id), text);
@@ -89,24 +130,59 @@ function render() {
 }
 
 
-// Имитация ввода
-userInput("add", 1, "любой текст");
-userInput("add", 2, "купить молоко");
-userInput("add", 5, "покакать");
-userInput("add", 9, "девятая задча");
-// userInput("add", 9, "задача 2");
-// userInput("add", 4, "задача 3");
 
-// userInput("toggle", 2);
-// userInput("toggle", 2);
-// userInput("toggle", 2);
+// ---------------ДОБАВИТЬ элемент ЗАДАЧИ
+function addTaskItem() {
+
+        // -------------------- рандомизируем индекс
+        function randomizeId() {
+            return Math.floor(Math.random() * (1 , 40))
+        };
+
+        // -------------------- кликаем по зеленой кнопке
+        addBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            userInput("add", randomizeId(), input.value);
+
+        });
 
 
-// userInput("delete", 1);
 
-// userInput("add", 1, "дrrrr");
+        // -----------НАЖАТИЕ ОКА
+        function setOK(setId) {
 
-// userInput("delete", 1);
-// userInput("delete", 1);
 
-console.log(taskManager.tasks)
+            // okCheckboxes.forEach(okayBtn => {
+            //     okayBtn.setAttribute('id', setId)
+            //     okayBtn.addEventListener('click', (e) => {
+            //             e.preventDefault(); 
+            //     })  
+                
+            //     console.log(okayBtn + "лист с инпутами")
+            // })
+
+            // ----------сравниваем чекбок с таском и вызываем тогл
+            // taskManager.tasks.forEach(taskArray => { 
+            //     taskArray.id = setId
+            //     userInput("toggle", setId);
+            // })   
+        }  
+        // ----- включаем добавление чекбокса с рандомным числом
+        setOK(randomizeId())
+
+
+}
+addTaskItem()
+
+
+
+
+
+
+
+
+
+
+
+
+
