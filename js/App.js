@@ -41,7 +41,7 @@ let taskManager = {
         this.tasks.forEach(task => {
             if (id == task.id) {
                 task.lastOperation = "edit"
-                let edited = task.userText = updateText
+                task.userText = updateText
     
            } 
         })
@@ -70,7 +70,7 @@ input.addEventListener('change', (e) => {
 // ----------------------создание содержания задачи с чекбоксами
 function createEl(task, ul) {
     const li = document.createElement("li")
-    li.append(task.userText, " ", task.done)
+    li.append(task.userText, " ")
 
     // ----------создаем чекбокс
     let checkboxInput = document.createElement('input')
@@ -104,10 +104,12 @@ function render() {
     taskManager.tasks.forEach(task => {
         const checkbox = createEl(task, ul)
         checkboxesList.push(checkbox)
+        console.log(checkboxesList)
     })
 
-    console.log(checkboxesList)
+    return checkboxesList
 }
+
 
 
 // ----------------ЯДРО ВЫЗОВА
@@ -131,26 +133,51 @@ function userInput(command, id, text) {
 
 
 
+//ДЕЛАЕМ------------навешивание такого же индекса на чекбокс
+ // -------------------- кликаем по зеленой кнопке
+ addBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    // -------------------- рандомизируем индекс
+    function randomizeId() {
+        return Math.floor(Math.random() * 100)
+    };
+    
+    let uniqueId = randomizeId()
+    let checkboxesArray = render();
+
+    function uniteId() {
+        console.log(uniqueId)
+     }
+     uniteId(uniqueId)
+    //  checkboxesArray.forEach(checkbox => { 
+    //     checkbox.id = randomizeId()
+    //     console.log(checkbox.id)
+    //  })
+
+     userInput("add", randomizeId(), input.value);
+    
+
+
+    
+     
+    taskManager.tasks.forEach(task => { 
+        console.log(task.userText + task.id)
+     })
+});
+
+
+
+
+
+
+
+
 // ---------------ДОБАВИТЬ элемент ЗАДАЧИ
 function addTaskItem() {
 
-        // -------------------- рандомизируем индекс
-        function randomizeId() {
-            return Math.floor(Math.random() * (1 , 40))
-        };
-
-        // -------------------- кликаем по зеленой кнопке
-        addBtn.addEventListener("click", (e) => {
-            e.preventDefault();
-            userInput("add", randomizeId(), input.value);
-
-        });
-
-
-
         // -----------НАЖАТИЕ ОКА
         function setOK(setId) {
-
 
             // okCheckboxes.forEach(okayBtn => {
             //     okayBtn.setAttribute('id', setId)
@@ -172,7 +199,7 @@ function addTaskItem() {
 
 
 }
-addTaskItem()
+// addTaskItem()
 
 
 
